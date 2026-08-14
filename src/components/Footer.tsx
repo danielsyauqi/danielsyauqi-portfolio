@@ -41,7 +41,7 @@ export function Footer() {
         <div className="footer-location">
           <span className="footer-label">Based in</span>
           <p>Kuala Lumpur, Malaysia</p>
-          <a href="mailto:daniel.syauqi@alphv.com">daniel.syauqi@alphv.com</a>
+          <a href="mailto:danielcruzz04@gmail.com">danielcruzz04@gmail.com</a>
         </div>
       </div>
 

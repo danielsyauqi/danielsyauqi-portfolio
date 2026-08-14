@@ -30,8 +30,8 @@ export default function ContactPage() {
       </div>
 
       <div className="contact-details">
-        <a className="contact-email" href="mailto:daniel.syauqi@alphv.com">
-          daniel.syauqi@alphv.com <ArrowIcon diagonal />
+        <a className="contact-email" href="mailto:danielcruzz04@gmail.com">
+          danielcruzz04@gmail.com <ArrowIcon diagonal />
         </a>
         <div className="contact-facts">
           <div>
