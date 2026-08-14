@@ -61,6 +61,35 @@ export default function Home() {
           </span>
           <h1>Hello, I&apos;m Syauqi <span aria-hidden="true">👋</span></h1>
           <p className="hero-role">Full-stack developer at ALPHV · Open-source maintainer · Visual storyteller</p>
+          <div className="hero-mobile-gallery">
+            <figure className="mobile-polaroid mobile-polaroid-teaching">
+              <div>
+                <Image
+                  alt="Syauqi leading a technology session for students"
+                  fill
+                  priority
+                  sizes="(max-width: 700px) 78vw, 360px"
+                  src="/media/about/daniel-1.jpeg"
+                />
+              </div>
+              <figcaption>teaching &amp; sharing</figcaption>
+            </figure>
+            <figure className="mobile-polaroid mobile-polaroid-showcase">
+              <div>
+                <Image
+                  alt="Syauqi presenting work at a technology showcase"
+                  fill
+                  priority
+                  sizes="(max-width: 700px) 78vw, 360px"
+                  src="/media/about/daniel-2.jpg"
+                />
+              </div>
+              <figcaption>showing the work</figcaption>
+            </figure>
+            <span className="mobile-collage-sticker" aria-hidden="true">
+              BUILD<br />FOR<br />PEOPLE
+            </span>
+          </div>
           <div className="hero-bio">
             <p>
               I build useful digital products at the intersection of <strong>business,

@@ -376,6 +376,78 @@ p {
   right: -120px;
 }
 
+.hero-mobile-gallery {
+  position: relative;
+  display: none;
+  width: min(100%, 580px);
+  height: 340px;
+  margin-top: 28px;
+}
+
+.mobile-polaroid {
+  position: absolute;
+  display: grid;
+  width: 360px;
+  height: 220px;
+  padding: 9px 9px 10px;
+  border: 1px solid rgba(25, 26, 33, 0.08);
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(26, 28, 36, 0.16);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.mobile-polaroid > div {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.mobile-polaroid img {
+  object-fit: cover;
+}
+
+.mobile-polaroid figcaption {
+  color: #777983;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  text-align: center;
+}
+
+.mobile-polaroid-teaching {
+  z-index: 2;
+  top: 8px;
+  left: 0;
+  animation: float-polaroid-left 6.4s ease-in-out infinite;
+}
+
+.mobile-polaroid-showcase {
+  z-index: 1;
+  top: 112px;
+  right: 0;
+  animation: float-polaroid-right 7s ease-in-out infinite;
+}
+
+.mobile-collage-sticker {
+  position: absolute;
+  z-index: 3;
+  top: 116px;
+  left: calc(50% - 41px);
+  display: grid;
+  width: 82px;
+  height: 82px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d8ff87;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  animation: sticker-bob 5.2s ease-in-out infinite;
+}
+
 .polaroid {
   position: absolute;
   width: 270px;
@@ -2024,6 +2096,10 @@ p {
   .hero-collage {
     display: none;
   }
+
+  .hero-mobile-gallery {
+    display: block;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2192,6 +2268,40 @@ p {
 
   .hero-collage {
     display: none;
+  }
+
+  .hero-mobile-gallery {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+  }
+
+  .mobile-polaroid {
+    width: 78%;
+    height: 172px;
+    padding: 7px 7px 9px;
+    gap: 6px;
+  }
+
+  .mobile-polaroid figcaption {
+    font-size: 9px;
+  }
+
+  .mobile-polaroid-teaching {
+    top: 4px;
+  }
+
+  .mobile-polaroid-showcase {
+    top: 118px;
+  }
+
+  .mobile-collage-sticker {
+    top: 67px;
+    left: auto;
+    right: -4px;
+    width: 68px;
+    height: 68px;
+    font-size: 8px;
   }
 
   .hero-bio {
