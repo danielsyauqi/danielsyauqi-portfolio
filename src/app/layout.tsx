@@ -17,7 +17,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://danielsyauqi.com"),
+  metadataBase: new URL("https://danielsyauqi.site"),
   title: {
     default: "Daniel Syauqi — Full-stack Developer & Product Builder",
     template: "%s — Daniel Syauqi",
