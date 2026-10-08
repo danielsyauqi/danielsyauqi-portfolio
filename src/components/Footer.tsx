@@ -28,6 +28,7 @@ export function Footer() {
           <Link href="/">Home</Link>
           <Link href="/web">Web</Link>
           <Link href="/media">Media</Link>
+          <Link href="/contributions">Contributions</Link>
           <Link href="/about">About</Link>
         </div>
         <div>
