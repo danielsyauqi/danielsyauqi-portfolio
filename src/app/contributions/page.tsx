@@ -101,15 +101,25 @@ export default function ContributionsPage() {
       <section className="contributions-hero page-shell" data-reveal="up">
         <p className="eyebrow">Contributions</p>
         <div className="contributions-hero-grid">
-          <h1>
-            Code that
-            <br />
-            landed upstream.
-          </h1>
-          <p>
-            A selection of fixes I contributed to projects maintained by others. Each
-            entry shows the problem, the change I made, and the public record behind it.
-          </p>
+          <div className="contributions-hero-copy">
+            <h1>
+              Code that
+              <br />
+              landed upstream.
+            </h1>
+            <p>
+              A selection of fixes I contributed to projects maintained by others. Each
+              entry shows the problem, the change I made, and the public record behind it.
+            </p>
+          </div>
+          <Image
+            className="contributions-hero-illustration"
+            src="/media/illustrations/open-source-code.svg"
+            alt="Illustration of an open-source code interface"
+            width={960}
+            height={743}
+            priority
+          />
         </div>
       </section>
 

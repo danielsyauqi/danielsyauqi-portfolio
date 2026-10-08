@@ -26,7 +26,12 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper);
+  background-color: var(--paper);
+  /* A low-contrast SVG generated with https://www.fffuel.co/ssscribble/ */
+  background-image: url("/media/illustrations/scribble-background.svg");
+  background-position: center top;
+  background-repeat: repeat-y;
+  background-size: max(100%, 1422px) auto;
   color: var(--ink);
   font-family: var(--font-manrope), Arial, sans-serif;
   font-size: 16px;
@@ -998,9 +1003,9 @@ p {
 .contributions-hero-grid {
   display: grid;
   margin-top: 18px;
-  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
-  gap: 70px;
-  align-items: end;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 56px;
+  align-items: center;
 }
 
 .contributions-hero h1 {
@@ -1010,11 +1015,18 @@ p {
   line-height: 0.98;
 }
 
-.contributions-hero-grid > p {
-  max-width: 420px;
+.contributions-hero-copy > p {
+  max-width: 620px;
+  margin-top: 28px;
   color: var(--muted);
   font-size: 18px;
   line-height: 1.7;
+}
+
+.contributions-hero-illustration {
+  width: min(100%, 430px);
+  height: auto;
+  justify-self: end;
 }
 
 .contributions-list {
@@ -2983,8 +2995,14 @@ p {
     font-size: 46px;
   }
 
-  .contributions-hero-grid > p {
+  .contributions-hero-copy > p {
+    margin-top: 20px;
     font-size: 16px;
+  }
+
+  .contributions-hero-illustration {
+    width: min(100%, 340px);
+    justify-self: center;
   }
 
   .contributions-list {
