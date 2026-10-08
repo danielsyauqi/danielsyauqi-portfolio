@@ -15,8 +15,13 @@ type Contribution = {
   problem: string;
   change: string;
   file: string;
-  removed: string;
-  added: string;
+  diffHunk: string;
+  diffLines: readonly {
+    kind: "context" | "removed" | "added";
+    oldLine?: number;
+    newLine?: number;
+    code: string;
+  }[];
   pullRequest: string;
   commit: string;
   shortCommit: string;
@@ -46,6 +51,7 @@ export function ContributionsExplorer({
           item.change,
           item.file,
           item.shortCommit,
+          ...item.diffLines.map((line) => line.code),
         ].some((value) => value.toLocaleLowerCase().includes(search)),
       )
       .sort((a, b) => b.dateTime.localeCompare(a.dateTime));
@@ -123,16 +129,27 @@ export function ContributionsExplorer({
                 </div>
               </div>
 
-              <div className="contribution-diff" aria-label={`Selected code change in ${item.file}`}>
+              <div className="contribution-diff" aria-label={`Diff excerpt from ${item.file}`}>
                 <div className="contribution-diff-heading">
-                  <span>Selected change</span>
-                  <span>{item.file}</span>
+                  <div>
+                    <span>Diff preview</span>
+                    <strong>{item.file}</strong>
+                  </div>
+                  <a href={`${item.pullRequest}/files`} target="_blank" rel="noreferrer">
+                    Full diff <ArrowIcon diagonal />
+                  </a>
                 </div>
-                <div className="contribution-diff-lines">
-                  <code className="diff-removed">− {item.removed}</code>
-                  <code className="diff-added">+ {item.added}</code>
+                <div className="contribution-diff-hunk">{item.diffHunk}</div>
+                <div className="contribution-diff-lines" aria-label="Selected changed lines">
+                  {item.diffLines.map((line, index) => (
+                    <div className={`contribution-diff-row diff-${line.kind}`} key={`${line.kind}-${index}`}>
+                      <span aria-hidden="true">{line.oldLine ?? ""}</span>
+                      <span aria-hidden="true">{line.newLine ?? ""}</span>
+                      <code>{line.kind === "added" ? "+" : line.kind === "removed" ? "−" : " "} {line.code}</code>
+                    </div>
+                  ))}
                 </div>
-                <p>Excerpt only. The pull request has the full diff and review.</p>
+                <p>Selected lines from merged PR #{item.pullNumber}.</p>
               </div>
             </div>
 

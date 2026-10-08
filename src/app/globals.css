@@ -1184,22 +1184,77 @@ p {
 }
 
 .contribution-diff-heading {
+  align-items: center;
   padding: 11px 14px;
   border-bottom: 1px solid #e9eaf0;
   font-size: 11px;
 }
 
-.contribution-diff-lines {
-  padding-block: 19px;
+.contribution-diff-heading > div {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
 }
 
-.contribution-diff-lines code {
-  display: block;
-  padding: 8px 16px;
+.contribution-diff-heading > div span {
+  color: var(--soft-muted);
+  text-transform: uppercase;
+}
+
+.contribution-diff-heading strong {
+  color: #444650;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.contribution-diff-heading a {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.contribution-diff-hunk {
+  padding: 7px 12px;
+  background: #f2f5fa;
+  color: #596f9a;
   font-family: var(--font-mono), monospace;
-  font-size: 12px;
+  font-size: 11px;
+}
+
+.contribution-diff-lines {
+  padding-block: 11px;
+}
+
+.contribution-diff-row {
+  display: grid;
+  min-height: 29px;
+  grid-template-columns: 34px 34px minmax(0, 1fr);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+}
+
+.contribution-diff-row > span {
+  padding: 6px 5px;
+  border-right: 1px solid rgba(70, 75, 95, 0.09);
+  color: #9599a5;
+  text-align: right;
+  user-select: none;
+}
+
+.contribution-diff-row code {
+  min-width: 0;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: inherit;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+}
+
+.diff-context {
+  color: #5d5f68;
 }
 
 .diff-removed {

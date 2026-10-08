@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowIcon } from "@/components/ArrowIcon";
 import { ContributionsExplorer } from "@/components/ContributionsExplorer";
 
@@ -18,8 +17,25 @@ const contributions = [
     change:
       "I made the parser treat that value as a cleared entrypoint, letting the supplied command or the image’s Cmd run. Three regression tests cover both fallbacks and a normal entrypoint.",
     file: "Parser.swift",
-    removed: 'else if let entrypoint = config?.entrypoint, !entrypoint.isEmpty {',
-    added: 'else if let entrypoint = config?.entrypoint, !entrypoint.isEmpty, entrypoint != [""] {',
+    diffHunk: "@@ -287,7 +287,8 @@",
+    diffLines: [
+      {
+        kind: "removed",
+        oldLine: 290,
+        code: '} else if let entrypoint = config?.entrypoint, !entrypoint.isEmpty {',
+      },
+      {
+        kind: "added",
+        newLine: 290,
+        code: '} else if let entrypoint = config?.entrypoint, !entrypoint.isEmpty, entrypoint != [""] {',
+      },
+      {
+        kind: "added",
+        newLine: 291,
+        code: "// A single empty string clears the image entrypoint.",
+      },
+      { kind: "context", oldLine: 291, newLine: 292, code: "result = entrypoint" },
+    ],
     pullRequest: "https://github.com/apple/container/pull/2296",
     commit: "https://github.com/apple/container/pull/2296/commits/1b02937c1b34651797e3ae51ed12b5e5f75d17a0",
     shortCommit: "1b02937",
@@ -37,8 +53,36 @@ const contributions = [
     change:
       "I connected both endpoints through BridgeDatagramProtocol, gave them distinct ports, and made incomplete transfers fail instead of counting as completed iterations.",
     file: "IPUDPTransfer/main.swift",
-    removed: "let clientOutput = DatagramLowerHarness(",
-    added: "let clientOutput = BridgeDatagramProtocol.instance(context: context)",
+    diffHunk: "@@ -74,6 +81,11 @@",
+    diffLines: [
+      {
+        kind: "context",
+        oldLine: 75,
+        newLine: 82,
+        code: "clientParameters.defaultStack.transport = .udp(clientUDPOptions)",
+      },
+      { kind: "context", oldLine: 76, newLine: 83, code: "" },
+      {
+        kind: "added",
+        newLine: 84,
+        code: "let clientOutput = BridgeDatagramProtocol.instance(context: context)",
+      },
+      {
+        kind: "added",
+        newLine: 85,
+        code: "let clientBridgeOptions = BridgeDatagramProtocol.options()",
+      },
+      {
+        kind: "added",
+        newLine: 86,
+        code: "clientBridgeOptions.setProtocolInstance(clientOutput)",
+      },
+      {
+        kind: "added",
+        newLine: 87,
+        code: "clientParameters.defaultStack.link = .custom(clientBridgeOptions)",
+      },
+    ],
     pullRequest: "https://github.com/apple/swift-network-evolution/pull/168",
     commit: "https://github.com/apple/swift-network-evolution/pull/168/commits/265e9b6f26aa5115f28e791610508e8d4a1c3139",
     shortCommit: "265e9b6",
@@ -106,9 +150,14 @@ export default function ContributionsPage() {
             </p>
           </div>
         </div>
-        <Link className="button button-dark" href="/web/seeder">
+        <a
+          className="button button-dark"
+          href="https://seederpm.xyz"
+          target="_blank"
+          rel="noreferrer"
+        >
           Explore Seeder <ArrowIcon diagonal />
-        </Link>
+        </a>
       </section>
     </main>
   );
