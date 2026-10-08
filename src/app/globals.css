@@ -1021,6 +1021,58 @@ p {
   padding-bottom: 92px;
 }
 
+.contribution-controls {
+  display: flex;
+  margin-bottom: 22px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.contribution-search {
+  display: grid;
+  width: min(100%, 370px);
+  gap: 8px;
+}
+
+.contribution-search label {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.contribution-search input {
+  width: 100%;
+  height: 45px;
+  padding: 10px 14px;
+  border: 1px solid #cfd1d9;
+  border-radius: 5px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.contribution-search input::placeholder {
+  color: var(--soft-muted);
+}
+
+.contribution-results-meta {
+  display: flex;
+  min-height: 45px;
+  align-items: center;
+  gap: 20px;
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+}
+
+.contribution-results-meta span:last-child {
+  color: #377252;
+}
+
 .contribution-items {
   display: grid;
   gap: 18px;
@@ -1042,6 +1094,41 @@ p {
   font-family: var(--font-mono), monospace;
   font-size: 12px;
   letter-spacing: 0.01em;
+}
+
+.contribution-topline {
+  align-items: center;
+}
+
+.contribution-repository {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.contribution-owner-logo {
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: white;
+  object-fit: contain;
+}
+
+.contribution-repository > div {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.contribution-repository > div span:first-child {
+  overflow-wrap: anywhere;
+  color: #42444e;
+}
+
+.contribution-repository > div span:last-child {
+  color: var(--soft-muted);
+  font-size: 11px;
 }
 
 .contribution-status {
@@ -1160,6 +1247,76 @@ p {
   font-weight: 400;
 }
 
+.contribution-empty {
+  padding: 45px 30px;
+  border: 1px dashed #cfd1d9;
+  border-radius: var(--radius);
+  background: #fafbfc;
+}
+
+.contribution-empty h3 {
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.contribution-empty p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.contribution-empty button {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.contribution-pagination {
+  display: flex;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contribution-pagination > span {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+}
+
+.contribution-pagination button {
+  min-width: 100px;
+  padding: 8px 13px;
+  border: 1px solid #cfd1d9;
+  border-radius: 5px;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contribution-pagination button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.contribution-pagination button:disabled {
+  color: var(--soft-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .contributions-maintainer {
   display: flex;
   min-height: 230px;
@@ -1171,6 +1328,17 @@ p {
   align-items: end;
   justify-content: space-between;
   gap: 30px;
+}
+
+.contributions-maintainer-content {
+  display: flex;
+  align-items: start;
+  gap: 22px;
+}
+
+.contributions-maintainer-logo {
+  flex: none;
+  border-radius: 14px;
 }
 
 .contributions-maintainer h2 {
@@ -2768,13 +2936,30 @@ p {
     padding-bottom: 60px;
   }
 
+  .contribution-controls {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contribution-search {
+    width: 100%;
+  }
+
+  .contribution-results-meta {
+    min-height: auto;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
   .contribution-card {
     padding: 20px;
   }
 
   .contribution-topline {
     flex-direction: column;
-    gap: 4px;
+    align-items: start;
+    gap: 10px;
   }
 
   .contribution-status {
@@ -2789,11 +2974,21 @@ p {
     font-size: 14px;
   }
 
+  .contribution-pagination button {
+    min-width: 75px;
+    padding-inline: 8px;
+  }
+
   .contributions-maintainer {
     margin-bottom: 80px;
     padding-block: 28px;
     align-items: start;
     flex-direction: column;
+  }
+
+  .contributions-maintainer-content {
+    flex-direction: column;
+    gap: 18px;
   }
 
   .index-hero-grid,

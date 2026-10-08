@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/ArrowIcon";
+import { ContributionsExplorer } from "@/components/ContributionsExplorer";
 
 const contributions = [
   {
     repository: "apple/container",
+    ownerName: "Apple",
+    ownerLogo: "/media/contributions/apple.jpg",
     pullNumber: 2296,
-    number: "01",
     date: "22 Sep 2026",
-    dateTime: "2026-09-22",
+    dateTime: "2026-09-22T23:36:21Z",
     title: "Run commands when an image entrypoint is empty",
     problem:
       'An image with Entrypoint: [""] tried to run an empty executable, so a command supplied to container run failed.',
@@ -23,10 +26,11 @@ const contributions = [
   },
   {
     repository: "apple/swift-network-evolution",
+    ownerName: "Apple",
+    ownerLogo: "/media/contributions/apple.jpg",
     pullNumber: 168,
-    number: "02",
     date: "24 Sep 2026",
-    dateTime: "2026-09-24",
+    dateTime: "2026-09-24T17:09:40Z",
     title: "Move the UDP benchmark onto the datagram bridge",
     problem:
       "The IPUDPTransfer benchmark manually passed packets between harnesses instead of using the bridge used by the networking stack.",
@@ -81,64 +85,26 @@ export default function ContributionsPage() {
           </a>
         </div>
 
-        <div className="contribution-items" data-reveal="stagger">
-          {contributions.map((item) => (
-            <article className="contribution-card" key={item.pullRequest}>
-              <div className="contribution-topline">
-                <span>{item.number} / {item.repository}</span>
-                <span className="contribution-status">
-                  Merged upstream · <time dateTime={item.dateTime}>{item.date}</time>
-                </span>
-              </div>
-
-              <h3>{item.title}</h3>
-
-              <div className="contribution-body">
-                <div className="contribution-story">
-                  <div>
-                    <span className="contribution-label">The problem</span>
-                    <p>{item.problem}</p>
-                  </div>
-                  <div>
-                    <span className="contribution-label">What I changed</span>
-                    <p>{item.change}</p>
-                  </div>
-                </div>
-
-                <div className="contribution-diff" aria-label={`Selected code change in ${item.file}`}>
-                  <div className="contribution-diff-heading">
-                    <span>Selected change</span>
-                    <span>{item.file}</span>
-                  </div>
-                  <div className="contribution-diff-lines">
-                    <code className="diff-removed">− {item.removed}</code>
-                    <code className="diff-added">+ {item.added}</code>
-                  </div>
-                  <p>Excerpt only. The pull request has the full diff and review.</p>
-                </div>
-              </div>
-
-              <div className="contribution-links">
-                <a href={item.pullRequest} target="_blank" rel="noreferrer">
-                  View merged PR #{item.pullNumber} <ArrowIcon diagonal />
-                </a>
-                <a href={item.commit} target="_blank" rel="noreferrer">
-                  Authored commit <span>{item.shortCommit}</span> <ArrowIcon diagonal />
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ContributionsExplorer contributions={contributions} />
       </section>
 
       <section className="contributions-maintainer page-shell" data-reveal="up">
-        <div>
-          <p className="eyebrow">Beyond upstream patches</p>
-          <h2>I also build and maintain Seeder.</h2>
-          <p>
-            My longer-running product work has its own case study, from the workspace
-            experience to the self-hosted architecture and AI-ready MCP server.
-          </p>
+        <div className="contributions-maintainer-content">
+          <Image
+            className="contributions-maintainer-logo"
+            src="/media/contributions/seeder-icon.png"
+            alt="Seeder logo"
+            width={72}
+            height={72}
+          />
+          <div>
+            <p className="eyebrow">Beyond upstream patches</p>
+            <h2>I also build and maintain Seeder.</h2>
+            <p>
+              My longer-running product work has its own case study, from the workspace
+              experience to the self-hosted architecture and AI-ready MCP server.
+            </p>
+          </div>
         </div>
         <Link className="button button-dark" href="/web/seeder">
           Explore Seeder <ArrowIcon diagonal />
