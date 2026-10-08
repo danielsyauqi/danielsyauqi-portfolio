@@ -27,11 +27,12 @@ html {
 body {
   margin: 0;
   background-color: var(--paper);
-  /* A low-contrast SVG generated with https://www.fffuel.co/ssscribble/ */
+  /* A light SVG generated with https://www.fffuel.co/ssscribble/ */
   background-image: url("/media/illustrations/scribble-background.svg");
-  background-position: center top;
+  background-position: 50% 0;
   background-repeat: repeat-y;
   background-size: max(100%, 1422px) auto;
+  animation: scribble-drift 24s ease-in-out infinite alternate;
   color: var(--ink);
   font-family: var(--font-manrope), Arial, sans-serif;
   font-size: 16px;
@@ -1027,6 +1028,7 @@ p {
   width: min(100%, 430px);
   height: auto;
   justify-self: end;
+  animation: contribution-float 7s ease-in-out infinite;
 }
 
 .contributions-list {
@@ -2384,6 +2386,22 @@ p {
 
 .not-found .button {
   margin-top: 18px;
+}
+
+@keyframes scribble-drift {
+  to {
+    background-position: calc(50% + 72px) 48px;
+  }
+}
+
+@keyframes contribution-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes fade-in {
