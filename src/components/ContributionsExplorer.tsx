@@ -131,13 +131,28 @@ export function ContributionsExplorer({
         {visible.map((item) => (
           <li className="contribution-row" key={item.pullRequest}>
             <button
+              className="contribution-row-main"
               type="button"
               aria-haspopup="dialog"
-              aria-label={`View details for ${item.title}`}
+              aria-label={`View details for ${item.title} in ${item.repository}`}
               onClick={() => setSelected(item)}
             >
-              <span>{highlightMatch(item.title, searchTerm)}</span>
-              <span aria-hidden="true">+</span>
+              <Image
+                className="contribution-row-logo"
+                src={item.ownerLogo}
+                alt=""
+                width={44}
+                height={44}
+              />
+              <span className="contribution-row-copy">
+                <span className="contribution-row-repository">
+                  {highlightMatch(item.repository, searchTerm)}
+                </span>
+                <span className="contribution-row-title">
+                  {highlightMatch(item.title, searchTerm)}
+                </span>
+              </span>
+              <span className="contribution-row-expand" aria-hidden="true">+</span>
             </button>
             <a href={item.pullRequest} target="_blank" rel="noreferrer">
               PR #{highlightMatch(item.pullNumber.toString(), searchTerm)} <ArrowIcon diagonal />
