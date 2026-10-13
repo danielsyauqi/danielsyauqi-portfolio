@@ -5,6 +5,43 @@ import { ContributionsExplorer } from "@/components/ContributionsExplorer";
 
 const contributions = [
   {
+    repository: "uutils/coreutils",
+    ownerName: "Uutils",
+    ownerLogo: "/media/contributions/uutils.png",
+    pullNumber: 15161,
+    date: "8 Oct 2026",
+    dateTime: "2026-10-08T20:09:10Z",
+    title: "Report touch access errors as “cannot touch”",
+    problem:
+      'For ordinary touch operations, inaccessible files and parent directories produced a “setting times of” error where GNU touch reports “cannot touch”.',
+    change:
+      'I made the error wording depend on the Unix access failure and touch options, preserving “setting times of” for -c and -h. Regression tests cover protected files and inaccessible parent directories.',
+    file: "src/uu/touch/src/touch.rs",
+    diffHunk: "@@ -484,9 +496,12 @@",
+    diffLines: [
+      {
+        kind: "added",
+        newLine: 499,
+        code: "let context = if cannot_touch_on_access_error(opts, &e) {",
+      },
+      {
+        kind: "added",
+        newLine: 500,
+        code: 'translate!("touch-error-cannot-touch", "filename" => filename.quote())',
+      },
+      { kind: "added", newLine: 501, code: "} else {" },
+      {
+        kind: "added",
+        newLine: 502,
+        code: 'translate!("touch-error-setting-times-of", "filename" => filename.quote())',
+      },
+      { kind: "added", newLine: 503, code: "};" },
+    ],
+    pullRequest: "https://github.com/uutils/coreutils/pull/15161",
+    commit: "https://github.com/uutils/coreutils/pull/15161/commits/29c7330080ecb44062779a67d53638669d005e1f",
+    shortCommit: "29c7330",
+  },
+  {
     repository: "apple/container",
     ownerName: "Apple",
     ownerLogo: "/media/contributions/apple.jpg",
