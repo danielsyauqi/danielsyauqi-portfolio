@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/ArrowIcon";
 
 type Contribution = {
@@ -61,8 +61,16 @@ export function ContributionsExplorer({
 }) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const resultsRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState<Contribution | null>(null);
+  const resultsRef = useRef<HTMLUListElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const searchTerm = query.trim();
+
+  useEffect(() => {
+    if (selected && dialogRef.current && !dialogRef.current.open) {
+      dialogRef.current.showModal();
+    }
+  }, [selected]);
 
   const matches = useMemo(() => {
     const search = searchTerm.toLocaleLowerCase();
@@ -119,55 +127,92 @@ export function ContributionsExplorer({
         </div>
       </div>
 
-      <div id="contribution-results" className="contribution-items" ref={resultsRef}>
+      <ul id="contribution-results" className="contribution-items" ref={resultsRef}>
         {visible.map((item) => (
-          <article className="contribution-card" key={item.pullRequest}>
+          <li className="contribution-row" key={item.pullRequest}>
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              aria-label={`View details for ${item.title}`}
+              onClick={() => setSelected(item)}
+            >
+              <span>{highlightMatch(item.title, searchTerm)}</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <a href={item.pullRequest} target="_blank" rel="noreferrer">
+              PR #{highlightMatch(item.pullNumber.toString(), searchTerm)} <ArrowIcon diagonal />
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {selected && (
+        <dialog
+          className="contribution-dialog"
+          ref={dialogRef}
+          aria-labelledby="contribution-dialog-title"
+          onClose={() => setSelected(null)}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) event.currentTarget.close();
+          }}
+        >
+          <div className="contribution-dialog-header">
+            <span>Contribution details</span>
+            <button
+              type="button"
+              aria-label="Close contribution details"
+              onClick={() => dialogRef.current?.close()}
+            >
+              ×
+            </button>
+          </div>
+          <div className="contribution-dialog-content">
             <div className="contribution-topline">
               <div className="contribution-repository">
                 <Image
                   className="contribution-owner-logo"
-                  src={item.ownerLogo}
-                  alt={`${item.ownerName} logo`}
+                  src={selected.ownerLogo}
+                  alt={`${selected.ownerName} logo`}
                   width={46}
                   height={46}
                 />
                 <div>
-                  <span>{highlightMatch(item.repository, searchTerm)}</span>
-                  <span>PR #{highlightMatch(item.pullNumber.toString(), searchTerm)}</span>
+                  <span>{highlightMatch(selected.repository, searchTerm)}</span>
+                  <span>PR #{highlightMatch(selected.pullNumber.toString(), searchTerm)}</span>
                 </div>
               </div>
               <span className="contribution-status">
-                Merged upstream · <time dateTime={item.dateTime}>{item.date}</time>
+                Merged upstream · <time dateTime={selected.dateTime}>{selected.date}</time>
               </span>
             </div>
 
-            <h3>{highlightMatch(item.title, searchTerm)}</h3>
+            <h2 id="contribution-dialog-title">{highlightMatch(selected.title, searchTerm)}</h2>
 
             <div className="contribution-body">
               <div className="contribution-story">
                 <div>
                   <span className="contribution-label">The problem</span>
-                  <p>{highlightMatch(item.problem, searchTerm)}</p>
+                  <p>{highlightMatch(selected.problem, searchTerm)}</p>
                 </div>
                 <div>
                   <span className="contribution-label">What I changed</span>
-                  <p>{highlightMatch(item.change, searchTerm)}</p>
+                  <p>{highlightMatch(selected.change, searchTerm)}</p>
                 </div>
               </div>
 
-              <div className="contribution-diff" aria-label={`Diff excerpt from ${item.file}`}>
+              <div className="contribution-diff" aria-label={`Diff excerpt from ${selected.file}`}>
                 <div className="contribution-diff-heading">
                   <div>
                     <span>Diff preview</span>
-                    <strong>{highlightMatch(item.file, searchTerm)}</strong>
+                    <strong>{highlightMatch(selected.file, searchTerm)}</strong>
                   </div>
-                  <a href={`${item.pullRequest}/files`} target="_blank" rel="noreferrer">
+                  <a href={`${selected.pullRequest}/files`} target="_blank" rel="noreferrer">
                     Full diff <ArrowIcon diagonal />
                   </a>
                 </div>
-                <div className="contribution-diff-hunk">{item.diffHunk}</div>
+                <div className="contribution-diff-hunk">{selected.diffHunk}</div>
                 <div className="contribution-diff-lines" aria-label="Selected changed lines">
-                  {item.diffLines.map((line, index) => (
+                  {selected.diffLines.map((line, index) => (
                     <div className={`contribution-diff-row diff-${line.kind}`} key={`${line.kind}-${index}`}>
                       <span aria-hidden="true">{line.oldLine ?? ""}</span>
                       <span aria-hidden="true">{line.newLine ?? ""}</span>
@@ -178,29 +223,29 @@ export function ContributionsExplorer({
                     </div>
                   ))}
                 </div>
-                <p>Selected lines from merged PR #{item.pullNumber}.</p>
+                <p>Selected lines from merged PR #{selected.pullNumber}.</p>
               </div>
             </div>
 
             <div className="contribution-links">
-              <a href={item.pullRequest} target="_blank" rel="noreferrer">
-                View merged PR #{highlightMatch(item.pullNumber.toString(), searchTerm)} <ArrowIcon diagonal />
+              <a href={selected.pullRequest} target="_blank" rel="noreferrer">
+                View merged PR #{highlightMatch(selected.pullNumber.toString(), searchTerm)} <ArrowIcon diagonal />
               </a>
-              <a href={item.commit} target="_blank" rel="noreferrer">
-                Authored commit <span>{highlightMatch(item.shortCommit, searchTerm)}</span> <ArrowIcon diagonal />
+              <a href={selected.commit} target="_blank" rel="noreferrer">
+                Authored commit <span>{highlightMatch(selected.shortCommit, searchTerm)}</span> <ArrowIcon diagonal />
               </a>
             </div>
-          </article>
-        ))}
-
-        {matches.length === 0 && (
-          <div className="contribution-empty">
-            <h3>No contributions found.</h3>
-            <p>Try a repository, topic, PR number, or commit ID.</p>
-            <button type="button" onClick={() => setQuery("")}>Clear search</button>
           </div>
-        )}
-      </div>
+        </dialog>
+      )}
+
+      {matches.length === 0 && (
+        <div className="contribution-empty">
+          <h3>No contributions found.</h3>
+          <p>Try a repository, topic, PR number, or commit ID.</p>
+          <button type="button" onClick={() => setQuery("")}>Clear search</button>
+        </div>
+      )}
 
       {matches.length > 0 && (
         <nav className="contribution-pagination" aria-label="Contribution pages">
