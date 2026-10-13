@@ -126,6 +126,22 @@ const contributions = [
   },
 ] as const;
 
+const organizations = Array.from(
+  contributions.reduce(
+    (byOwner, contribution) => {
+      const owner = contribution.repository.split("/")[0];
+      const existing = byOwner.get(owner);
+      byOwner.set(owner, {
+        name: contribution.ownerName,
+        logo: contribution.ownerLogo,
+        mergedCount: (existing?.mergedCount ?? 0) + 1,
+      });
+      return byOwner;
+    },
+    new Map<string, { name: string; logo: string; mergedCount: number }>(),
+  ).values(),
+).sort((a, b) => b.mergedCount - a.mergedCount || a.name.localeCompare(b.name));
+
 export const metadata: Metadata = {
   title: "Contributions",
   description:
@@ -149,14 +165,34 @@ export default function ContributionsPage() {
               entry shows the problem, the change I made, and the public record behind it.
             </p>
           </div>
-          <Image
-            className="contributions-hero-illustration"
-            src="/media/illustrations/open-source-code.svg"
-            alt="Illustration of an open-source code interface"
-            width={960}
-            height={743}
-            priority
-          />
+          <div
+            className="contributions-organizations"
+            role="group"
+            aria-label="Owners of the merged upstream repositories"
+          >
+            <div className="contributions-organizations-heading">
+              <span>Upstream owners</span>
+              <span>{organizations.length} represented</span>
+            </div>
+            <div className="contributions-organizations-grid">
+              {organizations.map((organization) => (
+                <div className="contributions-organization" key={organization.name}>
+                  <Image
+                    src={organization.logo}
+                    alt={`${organization.name} logo`}
+                    width={88}
+                    height={88}
+                  />
+                  <div>
+                    <strong>{organization.name}</strong>
+                    <span>
+                      {organization.mergedCount} merged {organization.mergedCount === 1 ? "PR" : "PRs"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

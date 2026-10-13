@@ -1024,11 +1024,81 @@ p {
   line-height: 1.7;
 }
 
-.contributions-hero-illustration {
-  width: min(100%, 430px);
-  height: auto;
+.contributions-organizations {
+  width: min(100%, 470px);
   justify-self: end;
+  padding: 18px;
+  border: 1px solid #dddde8;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 48px rgba(54, 49, 112, 0.09);
   animation: contribution-float 7s ease-in-out infinite;
+}
+
+.contributions-organizations-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 3px 15px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.contributions-organizations-heading span:first-child {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.contributions-organizations-grid {
+  display: grid;
+  margin-top: 15px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.contributions-organization {
+  display: flex;
+  min-width: 0;
+  min-height: 215px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8f9fc;
+}
+
+.contributions-organization img {
+  width: 88px;
+  height: 88px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  object-fit: contain;
+}
+
+.contributions-organization > div {
+  display: grid;
+  gap: 2px;
+}
+
+.contributions-organization strong {
+  font-size: 19px;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.contributions-organization span {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
 }
 
 .contributions-list {
@@ -1071,6 +1141,14 @@ p {
 
 .contribution-search input::placeholder {
   color: var(--soft-muted);
+}
+
+.contribution-search-match {
+  padding-inline: 0.08em;
+  border-radius: 2px;
+  background: #ffe27a;
+  box-decoration-break: clone;
+  color: #29230c;
 }
 
 .contribution-results-meta {
@@ -3018,9 +3096,25 @@ p {
     font-size: 16px;
   }
 
-  .contributions-hero-illustration {
-    width: min(100%, 340px);
-    justify-self: center;
+  .contributions-organizations {
+    width: 100%;
+    justify-self: stretch;
+    padding: 14px;
+  }
+
+  .contributions-organization {
+    min-height: 172px;
+    padding: 14px;
+  }
+
+  .contributions-organization img {
+    width: 70px;
+    height: 70px;
+    padding: 9px;
+  }
+
+  .contributions-organization strong {
+    font-size: 16px;
   }
 
   .contributions-list {

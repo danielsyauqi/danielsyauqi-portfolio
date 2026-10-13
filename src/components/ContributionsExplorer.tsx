@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { useMemo, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/ArrowIcon";
 
@@ -29,6 +30,30 @@ type Contribution = {
 
 const PAGE_SIZE = 5;
 
+function highlightMatch(value: string, search: string): ReactNode {
+  if (!search) return value;
+
+  const lowerValue = value.toLocaleLowerCase();
+  const lowerSearch = search.toLocaleLowerCase();
+  const parts: ReactNode[] = [];
+  let start = 0;
+  let match = lowerValue.indexOf(lowerSearch);
+
+  while (match !== -1) {
+    if (match > start) parts.push(value.slice(start, match));
+    parts.push(
+      <mark className="contribution-search-match" key={match}>
+        {value.slice(match, match + search.length)}
+      </mark>,
+    );
+    start = match + search.length;
+    match = lowerValue.indexOf(lowerSearch, start);
+  }
+
+  if (start < value.length) parts.push(value.slice(start));
+  return parts;
+}
+
 export function ContributionsExplorer({
   contributions,
 }: {
@@ -37,9 +62,10 @@ export function ContributionsExplorer({
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const searchTerm = query.trim();
 
   const matches = useMemo(() => {
-    const search = query.trim().toLocaleLowerCase();
+    const search = searchTerm.toLocaleLowerCase();
 
     return contributions
       .filter((item) =>
@@ -55,7 +81,7 @@ export function ContributionsExplorer({
         ].some((value) => value.toLocaleLowerCase().includes(search)),
       )
       .sort((a, b) => b.dateTime.localeCompare(a.dateTime));
-  }, [contributions, query]);
+  }, [contributions, searchTerm]);
 
   const pageCount = Math.max(1, Math.ceil(matches.length / PAGE_SIZE));
   const activePage = Math.min(page, pageCount);
@@ -106,8 +132,8 @@ export function ContributionsExplorer({
                   height={46}
                 />
                 <div>
-                  <span>{item.repository}</span>
-                  <span>PR #{item.pullNumber}</span>
+                  <span>{highlightMatch(item.repository, searchTerm)}</span>
+                  <span>PR #{highlightMatch(item.pullNumber.toString(), searchTerm)}</span>
                 </div>
               </div>
               <span className="contribution-status">
@@ -115,17 +141,17 @@ export function ContributionsExplorer({
               </span>
             </div>
 
-            <h3>{item.title}</h3>
+            <h3>{highlightMatch(item.title, searchTerm)}</h3>
 
             <div className="contribution-body">
               <div className="contribution-story">
                 <div>
                   <span className="contribution-label">The problem</span>
-                  <p>{item.problem}</p>
+                  <p>{highlightMatch(item.problem, searchTerm)}</p>
                 </div>
                 <div>
                   <span className="contribution-label">What I changed</span>
-                  <p>{item.change}</p>
+                  <p>{highlightMatch(item.change, searchTerm)}</p>
                 </div>
               </div>
 
@@ -133,7 +159,7 @@ export function ContributionsExplorer({
                 <div className="contribution-diff-heading">
                   <div>
                     <span>Diff preview</span>
-                    <strong>{item.file}</strong>
+                    <strong>{highlightMatch(item.file, searchTerm)}</strong>
                   </div>
                   <a href={`${item.pullRequest}/files`} target="_blank" rel="noreferrer">
                     Full diff <ArrowIcon diagonal />
@@ -145,7 +171,10 @@ export function ContributionsExplorer({
                     <div className={`contribution-diff-row diff-${line.kind}`} key={`${line.kind}-${index}`}>
                       <span aria-hidden="true">{line.oldLine ?? ""}</span>
                       <span aria-hidden="true">{line.newLine ?? ""}</span>
-                      <code>{line.kind === "added" ? "+" : line.kind === "removed" ? "−" : " "} {line.code}</code>
+                      <code>
+                        {line.kind === "added" ? "+" : line.kind === "removed" ? "−" : " "}{" "}
+                        {highlightMatch(line.code, searchTerm)}
+                      </code>
                     </div>
                   ))}
                 </div>
@@ -155,10 +184,10 @@ export function ContributionsExplorer({
 
             <div className="contribution-links">
               <a href={item.pullRequest} target="_blank" rel="noreferrer">
-                View merged PR #{item.pullNumber} <ArrowIcon diagonal />
+                View merged PR #{highlightMatch(item.pullNumber.toString(), searchTerm)} <ArrowIcon diagonal />
               </a>
               <a href={item.commit} target="_blank" rel="noreferrer">
-                Authored commit <span>{item.shortCommit}</span> <ArrowIcon diagonal />
+                Authored commit <span>{highlightMatch(item.shortCommit, searchTerm)}</span> <ArrowIcon diagonal />
               </a>
             </div>
           </article>
