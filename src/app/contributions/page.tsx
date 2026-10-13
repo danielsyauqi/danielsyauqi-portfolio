@@ -134,13 +134,23 @@ const organizations = Array.from(
       byOwner.set(owner, {
         name: contribution.ownerName,
         logo: contribution.ownerLogo,
-        mergedCount: (existing?.mergedCount ?? 0) + 1,
+        latestMerge: existing && existing.latestMerge > contribution.dateTime
+          ? existing.latestMerge
+          : contribution.dateTime,
       });
       return byOwner;
     },
-    new Map<string, { name: string; logo: string; mergedCount: number }>(),
+    new Map<string, { name: string; logo: string; latestMerge: string }>(),
   ).values(),
-).sort((a, b) => b.mergedCount - a.mergedCount || a.name.localeCompare(b.name));
+).sort((a, b) => b.latestMerge.localeCompare(a.latestMerge) || a.name.localeCompare(b.name));
+
+// Newest logo goes in the center; remaining logos fill left to right, bottom before top.
+const logoOrderBySlot = [6, 7, 8, 1, 0, 2, 3, 4, 5] as const;
+const organizationGrids = Array.from(
+  { length: Math.ceil(organizations.length / logoOrderBySlot.length) },
+  (_, gridIndex) =>
+    logoOrderBySlot.map((order) => organizations[gridIndex * logoOrderBySlot.length + order]),
+);
 
 export const metadata: Metadata = {
   title: "Contributions",
@@ -168,30 +178,32 @@ export default function ContributionsPage() {
           <div
             className="contributions-organizations"
             role="group"
-            aria-label="Owners of the merged upstream repositories"
+            aria-label="Projects represented by merged contributions"
           >
             <div className="contributions-organizations-heading">
-              <span>Upstream owners</span>
-              <span>{organizations.length} represented</span>
+              <span>Project Involved</span>
             </div>
-            <div className="contributions-organizations-grid">
-              {organizations.map((organization) => (
-                <div className="contributions-organization" key={organization.name}>
-                  <Image
-                    src={organization.logo}
-                    alt={`${organization.name} logo`}
-                    width={88}
-                    height={88}
-                  />
-                  <div>
-                    <strong>{organization.name}</strong>
-                    <span>
-                      {organization.mergedCount} merged {organization.mergedCount === 1 ? "PR" : "PRs"}
-                    </span>
+            {organizationGrids.map((grid, gridIndex) => (
+              <div className="contributions-organizations-grid" key={gridIndex}>
+                {grid.map((organization, slot) => (
+                  <div
+                    className={`contributions-organization-slot${organization ? "" : " is-empty"}`}
+                    key={slot}
+                    title={organization?.name}
+                    aria-hidden={organization ? undefined : true}
+                  >
+                    {organization && (
+                      <Image
+                        src={organization.logo}
+                        alt={`${organization.name} logo`}
+                        width={88}
+                        height={88}
+                      />
+                    )}
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
