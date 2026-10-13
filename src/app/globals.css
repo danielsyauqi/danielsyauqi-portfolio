@@ -1053,29 +1053,28 @@ p {
 }
 
 .contributions-organizations-grid {
-  display: grid;
+  display: flex;
+  min-height: 200px;
   margin-top: 15px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .contributions-organization-slot {
   display: grid;
-  min-width: 0;
-  aspect-ratio: 1.28;
+  width: min(112px, calc((100% - 24px) / 3));
+  aspect-ratio: 1;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: #f8f9fc;
 }
 
-.contributions-organization-slot.is-empty {
-  border-color: #eeeef4;
-  background: rgba(248, 249, 252, 0.45);
-}
-
 .contributions-organization-slot img {
-  width: min(78px, 70%);
+  width: 72%;
   height: auto;
   aspect-ratio: 1;
   padding: 8px;

@@ -144,14 +144,6 @@ const organizations = Array.from(
   ).values(),
 ).sort((a, b) => b.latestMerge.localeCompare(a.latestMerge) || a.name.localeCompare(b.name));
 
-// Newest logo goes in the center; remaining logos fill left to right, bottom before top.
-const logoOrderBySlot = [6, 7, 8, 1, 0, 2, 3, 4, 5] as const;
-const organizationGrids = Array.from(
-  { length: Math.ceil(organizations.length / logoOrderBySlot.length) },
-  (_, gridIndex) =>
-    logoOrderBySlot.map((order) => organizations[gridIndex * logoOrderBySlot.length + order]),
-);
-
 export const metadata: Metadata = {
   title: "Contributions",
   description:
@@ -183,27 +175,22 @@ export default function ContributionsPage() {
             <div className="contributions-organizations-heading">
               <span>Project Involved</span>
             </div>
-            {organizationGrids.map((grid, gridIndex) => (
-              <div className="contributions-organizations-grid" key={gridIndex}>
-                {grid.map((organization, slot) => (
-                  <div
-                    className={`contributions-organization-slot${organization ? "" : " is-empty"}`}
-                    key={slot}
-                    title={organization?.name}
-                    aria-hidden={organization ? undefined : true}
-                  >
-                    {organization && (
-                      <Image
-                        src={organization.logo}
-                        alt={`${organization.name} logo`}
-                        width={88}
-                        height={88}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
+            <div className="contributions-organizations-grid">
+              {organizations.map((organization) => (
+                <div
+                  className="contributions-organization-slot"
+                  key={organization.name}
+                  title={organization.name}
+                >
+                  <Image
+                    src={organization.logo}
+                    alt={`${organization.name} logo`}
+                    width={88}
+                    height={88}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
