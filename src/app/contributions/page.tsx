@@ -5,6 +5,45 @@ import { ContributionsExplorer } from "@/components/ContributionsExplorer";
 
 const contributions = [
   {
+    repository: "apple/swift-network-evolution",
+    ownerName: "Apple",
+    ownerLogo: "/media/contributions/apple.jpg",
+    pullNumber: 251,
+    date: "14 Oct 2026",
+    dateTime: "2026-10-14T03:42:20Z",
+    title: "Detect incomplete IPUDPTransfer datagrams",
+    problem:
+      "IPUDPTransfer counted any non-nil datagram read as a completed packet. With a 1,473-byte payload, the receiver could get an empty datagram while the benchmark still reported success.",
+    change:
+      "I made each received datagram match the generated payload length and made failed transfers exit with status 1, so empty or truncated receives cannot pass as successful runs.",
+    file: "Sources/Tools/IPUDPTransfer/main.swift",
+    diffHunk: "@@ -191,7 +191,7 @@",
+    diffLines: [
+      { kind: "context", oldLine: 191, newLine: 191, code: "// Transfer data" },
+      { kind: "context", oldLine: 192, newLine: 192, code: "var transferSucceeded = true" },
+      { kind: "context", oldLine: 193, newLine: 193, code: "for _ in 0..<packets {" },
+      {
+        kind: "removed",
+        oldLine: 194,
+        code: "guard clientInput.write(payload), serverInput.read() != nil else {",
+      },
+      {
+        kind: "added",
+        newLine: 194,
+        code: "guard clientInput.write(payload), serverInput.read()?.count == payload.count else {",
+      },
+      {
+        kind: "context",
+        oldLine: 195,
+        newLine: 195,
+        code: 'loggingHandle.log("Failed to transfer a payload")',
+      },
+    ],
+    pullRequest: "https://github.com/apple/swift-network-evolution/pull/251",
+    commit: "https://github.com/apple/swift-network-evolution/pull/251/commits/73ddd8d3b143c64499ee94db6e8ca7d9fde02c47",
+    shortCommit: "73ddd8d",
+  },
+  {
     repository: "uutils/coreutils",
     ownerName: "Uutils",
     ownerLogo: "/media/contributions/uutils.png",
